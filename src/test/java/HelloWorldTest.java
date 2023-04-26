@@ -21,5 +21,17 @@ public class HelloWorldTest {
         String answer = response.get("messages[1].message");
         System.out.println(answer);
     }
+    @Test
+    public void testEx6Redirect() {
+        Response response = RestAssured
+                .given()
+                .redirects()
+                .follow(false)
+                .when()
+                .get("https://playground.learnqa.ru/api/long_redirect")
+                .andReturn();
+        String locationHeader = response.getHeader("location");
+        System.out.println(locationHeader);
+    }
 
 }
