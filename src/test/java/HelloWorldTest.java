@@ -37,6 +37,7 @@ public class HelloWorldTest {
     public void testEx7LongRedirect() {
 
         int statusCode = 100;
+        int countRedirects = 0;
         String url = "https://playground.learnqa.ru/api/long_redirect";
         while(statusCode != 200) {
             Response response = RestAssured
@@ -47,12 +48,13 @@ public class HelloWorldTest {
                     .get(url)
                     .andReturn();
             statusCode = response.getStatusCode();
-            url = response.getHeader("location");
-            if (statusCode == 200) {
-                url = "There is no redirect more!!!";
+            if(statusCode != 200) {
+                url = response.getHeader("location");
+                countRedirects++;
+                System.out.println(statusCode + "  ---  " + url);
             }
-            System.out.println(statusCode + "  ---  " + url);
         }
+        System.out.println("The number of redirects is " + countRedirects + ".");
     }
 
 }
