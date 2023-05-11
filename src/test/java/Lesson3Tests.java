@@ -1,4 +1,5 @@
 import io.restassured.RestAssured;
+import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
@@ -21,5 +22,15 @@ public class Lesson3Tests {
         assertFalse(cookies.isEmpty(), "There is no cookies.");
         assertTrue(cookies.containsKey("HomeWork"),"There is no cookie with this key.");
         assertTrue(cookies.containsValue("hw_value"),"There is no cookie with this value.");
+    }
+    @Test
+    public void testEx12Headers() {
+        Response response = RestAssured
+                .get("https://playground.learnqa.ru/api/homework_header")
+                .andReturn();
+        Headers headers = response.getHeaders();
+        assertTrue(headers.size() > 0, "There is no headers in response.");
+        assertTrue(headers.hasHeaderWithName("x-secret-homework-header"),"There is no header with this name 'x-secret-homework-heade'.");
+        assertEquals(headers.getValue("x-secret-homework-header"),"Some secret value", "There is no header with value 'Some secret value'.");
     }
 }
