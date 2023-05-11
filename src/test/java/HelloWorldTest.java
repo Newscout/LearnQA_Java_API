@@ -147,21 +147,22 @@ public class HelloWorldTest {
                     .when()
                     .post("https://playground.learnqa.ru/ajax/api/get_secret_password_homework")
                     .andReturn();
-            System.out.println(i + "  -  " + responseGetAuthCookie.getCookie("auth_cookie"));
+//            System.out.println(i + "  -  " + responseGetAuthCookie.getCookie("auth_cookie"));
             String responseAuthCookie = responseGetAuthCookie.getCookie("auth_cookie");
             Map<String, String> cookie = new HashMap<>();
             cookie.put("auth_cookie", responseAuthCookie);
             Response responseCheckAuth = RestAssured
                     .given()
-                    .body(cookie)
+                    .cookies(cookie)
                     .when()
                     .post("https://playground.learnqa.ru/ajax/api/check_auth_cookie")
                     .andReturn();
             String body = responseCheckAuth.getBody().asString();
-            System.out.println(body);
+//            System.out.println(body);
             if(body.equals("You are authorized")) {
                 password = passwords[i];
                 System.out.println(body + ". The password is '" + password + "'.");
+                break;
             }
             System.out.println(body + ". The password '" + passwords[i] + "' is not correct.");
         }
